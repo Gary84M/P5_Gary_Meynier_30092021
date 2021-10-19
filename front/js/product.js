@@ -41,13 +41,6 @@ async function couchSpecs(id) {
   colorPicker(data);
 }
 couchSpecs(id);
-// fetch(API_PRODUCTS_LIST_LINK + "/" + id)
-//   .then((res) => res.json())
-//   .then((specs) => specsInjection(specs))
-//   .catch((error) => console.log(error));
-//***************************************************************************
-// ******************************HTML INJECTION *****************************
-// **************************************************************************
 
 const specsInjection = (data) => {
   document.querySelector(".item__img").innerHTML = `
