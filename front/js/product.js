@@ -5,21 +5,15 @@ const cart = new Cart();
 //lors du clic sur Ajouter au panier, il faudrait appeler la methode cart.addProduct(id,qty,color)
 
 const queryStringURLId = window.location.search;
-console.log(queryStringURLId);
+// get URL from the "?" mark
 
 const urlSearchParams = new URLSearchParams(queryStringURLId);
-console.log(urlSearchParams);
+//USP called as a new instance with queryStringURLId argument
 
 const id = urlSearchParams.get("id");
-console.log(id);
+//create const id
 
-// let APISingleProduct = addId();
-
-// function addId() {
-//   return API_PRODUCTS_LIST_LINK.urlSearchParams.append("id");
-// }
-// console.log(APISingleProduct);
-
+//Iteration of color of data.colors w/ arg data + create markup <option>
 function colorPicker(data) {
   for (let color of data.colors) {
     console.log(color);
@@ -30,7 +24,7 @@ function colorPicker(data) {
     document.getElementById("colors").appendChild(option);
   }
 }
-
+//Call the API + id. declare: data. call API, specsInjection & colorPicker
 async function couchSpecs(id) {
   const response = await fetch(API_PRODUCTS_LIST_LINK + "/" + id);
   const data = await response.json();
