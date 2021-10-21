@@ -1,5 +1,9 @@
 export class Cart {
-  constructor() {
+  constructor(id, color, qty) {
+    this.id = id;
+    this.color = color;
+    this.qty = qty;
+
     this.items = [];
 
     //this.load();
@@ -11,7 +15,7 @@ export class Cart {
     this._save();
   }
 
-  removeProduct(id, color) {
+  removeProduct(id, qty, color) {
     this._save();
   }
 
@@ -20,6 +24,6 @@ export class Cart {
   }
 
   load() {
-    //recuperer depuis storage this.itme
+    //recuperer depuis storage this.items
   }
 }
