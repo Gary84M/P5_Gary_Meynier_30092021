@@ -4,29 +4,60 @@ export class Cart {
     this._load();
   }
 
-  addProduct(product, qty, color) {
-    //TODO veirfier tes types de données qyt number > 0 ...
+  addProduct(_id, qty, color, price) {
+    console.log(this);
+    if (qty < 1 || qty > 100 || color == false) {
+      alert("Veuillez insérer un nombre entre 1 et 100 et choisir une couleur");
+      return 0;
+    } else {
+      let sofa = { _id, qty, color, price };
 
-    //TODO verifier avant insertion s'il ne faudrait pas plutot incrementer un item existant
+      let itemsInCart = this.items.find(
+        (p) => p._id === sofa._id && p.color === sofa.color
+      );
+      // console.log(_id.price);
 
-    //ajouter produit à this.items
-    this.items.push({ product, qty, color });
+      if (itemsInCart !== undefined) {
+        itemsInCart.qty += qty;
+      } else {
+        this.items.push(sofa);
+      }
+      console.log(itemsInCart);
 
+      // if (itemsInCart != null) {
+      //   qty += this.items.quantity;
+      //   console.log(item.price);
+      // } else {
+      //   return 0;
+      // }
+      // alert("Articles(s) rajouté(s) au panier");
+    }
+
+    let total = this.getTotal();
+    console.log(total);
     this._save();
   }
 
-  removeProduct(id, qty, color) {
+  removeProduct(id, color) {
+    this.items.pop();
     this._save();
   }
 
   getTotal() {
-    // TODO calculer le total du panier
-    return 0;
+    let total = 0;
+    if (this.items.length > 0) {
+      for (let item of this.items) {
+        total += item.price;
+      }
+    }
+
+    return total;
   }
 
   clear() {
-    this.items = [];
-    this._save();
+    localStorage.removeItem("cartItems");
+    // this.items = [];
+    // this._save();
   }
 
   _save() {

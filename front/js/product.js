@@ -21,11 +21,27 @@ const urlSearchParams = new URLSearchParams(queryStringURLId);
 //create const id
 const id = urlSearchParams.get("id");
 
+function isInteger(n) {
+  return !isNaN(parseInt(n));
+}
+function isFloat(n) {
+  return !isNaN(parseFloat(n));
+}
+
 couchSpecs(id).then((couch) => {
   colorPicker(couch.colors);
   specsInjection(couch);
   addToCartButton.addEventListener("click", () => {
-    cart.addProduct(couch, couchQuantityInput.value, couchColorsSelector.value);
+    let productPrice = document.getElementById("price").innerHTML;
+
+    cart.addProduct(
+      couch,
+      isInteger(couchQuantityInput.value)
+        ? parseInt(couchQuantityInput.value)
+        : 0,
+      couchColorsSelector.value,
+      isInteger(productPrice) ? parseInt(productPrice) : 0
+    );
   });
 });
 
