@@ -15,7 +15,6 @@ export class Cart {
       let itemsInCart = this.items.find(
         (p) => p._id === sofa._id && p.color === sofa.color
       );
-      // console.log(_id.price);
 
       if (itemsInCart !== undefined) {
         itemsInCart.qty += qty;
