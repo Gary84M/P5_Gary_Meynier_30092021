@@ -5,7 +5,7 @@ export class Cart {
   }
 
   addProduct(_id, qty, color, price) {
-    console.log(this);
+    //console.log(this);
     if (qty < 1 || qty > 100 || color == false) {
       alert("Veuillez insérer un nombre entre 1 et 100 et choisir une couleur");
       return 0;
@@ -32,8 +32,8 @@ export class Cart {
       // alert("Articles(s) rajouté(s) au panier");
     }
 
-    let total = this.getTotal();
-    console.log(total);
+    this.getTotal();
+
     this._save();
   }
 
@@ -48,8 +48,10 @@ export class Cart {
       for (let item of this.items) {
         total += item.price;
       }
+    } else {
+      return 0;
     }
-
+    console.log(total);
     return total;
   }
 

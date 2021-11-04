@@ -1,9 +1,5 @@
-import {
-  API_PRODUCTS_LIST_LINK
-} from "./constant.js";
-import {
-  Cart
-} from "./model/Cart.js";
+import { API_PRODUCTS_LIST_LINK } from "./constant.js";
+import { Cart } from "./model/Cart.js";
 
 const cart = new Cart();
 
@@ -26,7 +22,6 @@ const urlSearchParams = new URLSearchParams(queryStringURLId);
 //create const id
 const id = urlSearchParams.get("id");
 
-//Make sure an integer is input
 function isInteger(n) {
   return !isNaN(parseInt(n));
 }
@@ -36,18 +31,25 @@ couchSpecs(id).then((couch) => {
   specsInjection(couch);
 
   addToCartButton.addEventListener("click", () => {
+    let productPrice = document.getElementById("price").innerHTML;
     cart.addProduct(
-      couch, couchColorsSelector.value,
-      if(isInteger(couchQuantityInput.value) == true) {
-        parseInt(couchQuantityInput.value);
-      } else {
-        return 0;
-      },
-      if (isInteger(productPrice) == true) {
-        parseInt(productPrice)
-      } else {
-        return 0
-      }
+      couch,
+      isInteger(couchQuantityInput.value)
+        ? parseInt(couchQuantityInput.value)
+        : 0,
+      couchColorsSelector.value,
+      isInteger(productPrice) ? parseInt(productPrice) : 0
+
+      // if(isInteger(couchQuantityInput.value) == true) {
+      //   parseInt(couchQuantityInput.value);
+      // } else {
+      //   return 0;
+      // },
+      // if (isInteger(productPrice) == true) {
+      //   parseInt(productPrice)
+      // } else {
+      //   return 0
+      // }
     );
   });
 });
