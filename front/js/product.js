@@ -33,12 +33,12 @@ couchSpecs(id).then((couch) => {
   addToCartButton.addEventListener("click", () => {
     let productPrice = document.getElementById("price").innerHTML;
     cart.addProduct(
-      couch,
+      couch._id,
       isInteger(couchQuantityInput.value)
         ? parseInt(couchQuantityInput.value)
         : 0,
-      couchColorsSelector.value,
-      isInteger(productPrice) ? parseInt(productPrice) : 0
+      couchColorsSelector.value
+      // isInteger(productPrice) ? parseInt(productPrice) : 0
 
       // if(isInteger(couchQuantityInput.value) == true) {
       //   parseInt(couchQuantityInput.value);

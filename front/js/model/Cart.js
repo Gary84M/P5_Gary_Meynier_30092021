@@ -4,13 +4,16 @@ export class Cart {
     this._load();
   }
 
-  addProduct(_id, qty, color, price) {
-    //console.log(this);
+  addProduct(_id, qty, color) {
     if (qty < 1 || qty > 100 || color == false) {
       alert("Veuillez insérer un nombre entre 1 et 100 et choisir une couleur");
       return 0;
     } else {
-      let sofa = { _id, qty, color, price };
+      let sofa = {
+        _id,
+        qty,
+        color,
+      };
 
       let itemsInCart = this.items.find(
         (p) => p._id === sofa._id && p.color === sofa.color
@@ -32,14 +35,21 @@ export class Cart {
       // alert("Articles(s) rajouté(s) au panier");
     }
 
-    this.getTotal();
-
     this._save();
   }
 
-  removeProduct(id, color) {
-    this.items.pop();
-    this._save();
+  deleteItem(index) {
+    this.items.splice(index, 1);
+    // supprimer la ligne dans le html
+
+    this._load;
+  }
+  deleteAllItems(_id, color) {}
+
+  clearCart() {
+    localStorage.removeItem("cartItems");
+    // this.items = [];
+    // this._save();
   }
 
   getTotal() {
@@ -53,12 +63,6 @@ export class Cart {
     }
     console.log(total);
     return total;
-  }
-
-  clear() {
-    localStorage.removeItem("cartItems");
-    // this.items = [];
-    // this._save();
   }
 
   _save() {
