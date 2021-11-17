@@ -93,6 +93,14 @@ currentCart.forEach((item, index) => {
       qtyInput.setAttribute("max", "100");
       qtyInput.setAttribute("name", "itemQuantity");
 
+      //Changement des qty
+      qtyInput.addEventListener("change", () => {
+        item.qty = qtyInput[index];
+        cart._save(index);
+
+        console.log("Qty change detected");
+      });
+
       //Injection of <div> -> cart__item__content__settings__delete
       let cartItemContentSettingsDelete = document.createElement("div");
       cartItemContentSettings.appendChild(cartItemContentSettingsDelete);
@@ -105,22 +113,28 @@ currentCart.forEach((item, index) => {
       deleteItem.className = "deleteItem";
       deleteItem.innerHTML = "Supprimer";
 
+      //Calcul des totaux
       console.log(item.qty);
       console.log(specs.price);
       totalCart += item.qty * specs.price;
       totalArticles += item.qty;
 
+      //Injection des totaux
       totalPrice.innerHTML = totalCart;
       totalQuantity.innerHTML = totalArticles;
 
+      //Delete Button
       let deleteBtns = document.querySelectorAll(".deleteItem");
 
       deleteBtns[index].addEventListener("click", () => {
         console.log("je click" + index);
-        cart.deleteItem(index, 1);
+        cart.deleteItem(index);
       });
     })
     .catch((error) => {
       console.log(error);
     });
 });
+//************************************************************/
+//**************GESTION FORMULAIRE****************************/
+//************************************************************/

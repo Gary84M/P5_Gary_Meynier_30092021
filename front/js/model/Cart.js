@@ -39,10 +39,13 @@ export class Cart {
   }
 
   deleteItem(index) {
-    this.items.splice(index, 1);
+    console.log(this.items.splice(index, 1));
     // supprimer la ligne dans le html
+    console.log("deleteBtn");
 
-    this._load;
+    this._save(index);
+    this._load(index);
+    location.reload();
   }
   deleteAllItems(_id, color) {}
 
@@ -68,6 +71,7 @@ export class Cart {
   _save() {
     //stocker this.items dans ton localSotrage
     localStorage.setItem("cartItems", JSON.stringify(this.items));
+    console.log("SAVE");
   }
 
   _load() {
