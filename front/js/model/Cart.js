@@ -1,6 +1,7 @@
 export class Cart {
   constructor() {
     this.items = [];
+    this.totalPrice = 0;
     this._load();
   }
 
@@ -37,6 +38,11 @@ export class Cart {
 
     this._save();
   }
+  // changeQuantity(id, color, qty) {
+  //   let items = this._load;
+  //   for (let i = 0; i < items.length; i++) {
+
+  // }
 
   deleteItem(index) {
     console.log(this.items.splice(index, 1));
@@ -45,9 +51,7 @@ export class Cart {
 
     this._save(index);
     this._load(index);
-    location.reload();
   }
-  deleteAllItems(_id, color) {}
 
   clearCart() {
     localStorage.removeItem("cartItems");
@@ -72,6 +76,7 @@ export class Cart {
     //stocker this.items dans ton localSotrage
     localStorage.setItem("cartItems", JSON.stringify(this.items));
     console.log("SAVE");
+    //location.reload();
   }
 
   _load() {

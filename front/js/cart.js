@@ -6,12 +6,12 @@ const cart = new Cart();
 let totalQuantity = document.getElementById("totalQuantity");
 let totalPrice = document.getElementById("totalPrice");
 
-let currentCart = JSON.parse(localStorage.getItem("cartItems")) || [];
-console.log(currentCart);
+//let currentCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+//console.log(currentCart);
 let totalCart = 0;
 let totalArticles = 0;
-
-currentCart.forEach((item, index) => {
+//TODO @params item @params specs to explain better
+cart.items.forEach((item, index) => {
   console.log(item._id);
   console.log(item.color);
 
@@ -94,11 +94,36 @@ currentCart.forEach((item, index) => {
       qtyInput.setAttribute("name", "itemQuantity");
 
       //Changement des qty
-      qtyInput.addEventListener("change", () => {
-        item.qty = qtyInput[index];
-        cart._save(index);
+      qtyInput.addEventListener("change", (e) => {
+        e.preventDefault();
 
+        let oldQty = item.qty;
+        let ttPrice = totalPrice.value;
+
+        // on change la valeur de qty localstorage
+        item.qty = parseInt(qtyInput.value);
+        let diff = item.qty - oldQty;
+        console.log(diff);
+        cart._save();
+        console.log(item);
+        console.log(cart);
+        //et oldQty = cart.items[index].qty;
+        /*
+        console.log(e.target.valueAsNumber);
+        let newInput = e.target.valueAsNumber;
+        console.log(item);
+        item.qty = qtyInput.value;
+        console.log(item);
+        console.log(cart);
+        let totalChange = newInput - oldQty;
+*/
+        console.log(specs);
+        console.log(qtyInput.value);
+        console.log(item.qty);
         console.log("Qty change detected");
+
+        // f calcul des totaux
+        calculateTotals(diff, specs.price);
       });
 
       //Injection of <div> -> cart__item__content__settings__delete
@@ -113,22 +138,30 @@ currentCart.forEach((item, index) => {
       deleteItem.className = "deleteItem";
       deleteItem.innerHTML = "Supprimer";
 
-      //Calcul des totaux
-      console.log(item.qty);
-      console.log(specs.price);
-      totalCart += item.qty * specs.price;
-      totalArticles += item.qty;
+      function calculateTotals(qty, price) {
+        //Calcul des totaux
+        totalCart += parseInt(qty) * price;
 
-      //Injection des totaux
-      totalPrice.innerHTML = totalCart;
-      totalQuantity.innerHTML = totalArticles;
+        totalArticles += parseInt(qty);
+
+        //Injection des totaux
+        totalPrice.innerHTML = totalCart;
+        cart.totalPrice = totalCart;
+        totalQuantity.innerHTML = totalArticles;
+      }
+      calculateTotals(item.qty, specs.price);
 
       //Delete Button
       let deleteBtns = document.querySelectorAll(".deleteItem");
 
-      deleteBtns[index].addEventListener("click", () => {
+      deleteBtns[index].addEventListener("click", (e) => {
+        //e.preventDefault();
         console.log("je click" + index);
+        console.log(e);
+        e.path[4].remove();
         cart.deleteItem(index);
+        calculateTotals(item.qty * -1, specs.price);
+        cart._save;
       });
     })
     .catch((error) => {
