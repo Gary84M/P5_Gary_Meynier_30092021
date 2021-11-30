@@ -168,6 +168,179 @@ cart.items.forEach((item, index) => {
       console.log(error);
     });
 });
-//************************************************************/
-//**************GESTION FORMULAIRE****************************/
-//************************************************************/
+//*******************************************************************/
+//**************************CUSTOMER FORM****************************/
+//*******************************************************************/
+
+//DOM SELECTION
+//let form = document.querySelector(".cart__order__form");
+let firstName = document.getElementById("firstName");
+let lastName = document.getElementById("lastName");
+let address = document.getElementById("address");
+let city = document.getElementById("city");
+let email = document.getElementById("email");
+
+// User input verification
+// 1stName
+const firstNameVerif = () => {
+  let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+  if (!/^[A-Za-zÀ-ÿ\-' ]+$/gi.test(firstName.value) || firstName.value == "") {
+    firstNameErrorMsg.textContent = "Ceci n'est pas un prénom normal!";
+    console.log("prénom: " + firstName.value + " invalide");
+    return false;
+  } else {
+    firstNameErrorMsg.textContent = "";
+    return true;
+  }
+};
+// Surname
+const lastNameVerif = () => {
+  let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+  if (!/^[A-Za-zÀ-ÿ\-' ]+$/gi.test(lastName.value) || lastName.value == "") {
+    lastNameErrorMsg.textContent = "Ceci n'est pas un nom de famille normal!";
+    console.log("nom: " + lastName.value + " invalide");
+    return false;
+  } else {
+    lastNameErrorMsg.textContent = "";
+    return true;
+  }
+};
+// address
+const addressVerif = () => {
+  let addressErrorMsg = document.getElementById("addressErrorMsg");
+  if (
+    !/^([A-Za-zÀ-ÿ]|[0-9]{1,4})([A-Za-zÀ-ÿ\-' ]+$)/gi.test(address.value) ||
+    address.value == ""
+  ) {
+    addressErrorMsg.textContent = "Renseignez une adresse sur la planète Terre";
+    console.log("Adresse invalide");
+    return false;
+  } else {
+    addressErrorMsg.textContent = "";
+    return true;
+  }
+};
+// City
+const cityVerif = () => {
+  let cityErrorMsg = document.querySelector("#cityErrorMsg");
+  if (!/^[A-Za-zÀ-ÿ\-' ]+$/gi.test(city.value) || city.value == "") {
+    // ou cp + ville : /^[0-9]{5} [A-Za-zÀ-ÿ\-' ]+$/gi
+    cityErrorMsg.textContent = "Renseignez une ville digne de ce nom!";
+    console.log("Nom de ville invalide");
+    return false;
+  } else {
+    cityErrorMsg.textContent = "";
+    return true;
+  }
+};
+// email
+const emailVerif = () => {
+  let emailErrorMsg = document.getElementById("emailErrorMsg");
+  if (
+    !/([a-z\.\-]{1,})@([a-z\-\.]{2,})\.([a-z]{2,4})/gi.test(email.value) ||
+    email.value == ""
+  ) {
+    emailErrorMsg.textContent = "Adresse email invalide";
+    console.log("Adresse email invalide");
+    return false;
+  } else {
+    emailErrorMsg.textContent = "";
+    return true;
+  }
+};
+
+// eventListerner on the orderBtn
+let orderBtn = document.getElementById("order");
+orderBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  let contact = {};
+  let products = [];
+  //collect items' IDs
+  cart.items.forEach((item) => {
+    products.push(item._id);
+    console.log(item);
+  });
+  // call verif functions based on exports.orderProducts = (req, res, next) =>
+  if (
+    !firstNameVerif() ||
+    !lastNameVerif() ||
+    !addressVerif() ||
+    !cityVerif() ||
+    !emailVerif()
+  ) {
+    e.preventDefault();
+  } else {
+    console.log("correct input on form");
+    // organise contact according to back
+    contact = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value,
+    };
+    // declare order containing contact and products
+    let order = {
+      contact,
+      products,
+    };
+
+    sendOrder(order);
+
+    //async function postToApi() {}
+    /*
+    fetch('http://localhost:3000/api/products/order', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order),
+    })
+      .then((response) => {
+        let data = response.json();
+        console.log(data.orderId);
+        if (data) {
+          console.log(data);
+          
+          let orderLink = document.createElement("a");
+          orderLink.href = "confirmation.html?id=" + data.orderId;
+
+          
+          
+          console.log(orderLink);
+          window.location.href = orderLink;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+      */
+  }
+});
+
+const sendOrder = async (order) => {
+  try {
+    const response = await fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    });
+    if (!response.ok) {
+      throw new Error(response.status);
+    }
+    const data = await response.json();
+    console.log(data.orderId);
+
+    let orderLink = document.createElement("a");
+    orderLink.href = "confirmation.html?id=" + data.orderId;
+
+    console.log(orderLink);
+    window.location.href = orderLink;
+  } catch (error) {
+    console.log(error);
+  }
+};
