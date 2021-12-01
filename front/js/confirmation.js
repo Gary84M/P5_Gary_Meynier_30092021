@@ -7,4 +7,4 @@ const orderUrl = new URL(params);
 const orderId = orderUrl.searchParams.get("id");
 
 document.getElementById("orderId").innerHTML = orderId;
-cart.clearCart;
+cart.clearCart(cart);

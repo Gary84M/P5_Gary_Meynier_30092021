@@ -13,7 +13,6 @@ const couchDescriptionContainer = document.querySelector(
 const couchTitlePriceContainer = document.querySelector(
   ".item__content__titlePrice"
 );
-let productPrice = document.getElementById("price").innerHTML;
 
 // get URL from the "?" mark
 const queryStringURLId = window.location.search;

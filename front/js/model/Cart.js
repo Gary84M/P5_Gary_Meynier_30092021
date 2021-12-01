@@ -25,7 +25,7 @@ export class Cart {
       } else {
         this.items.push(sofa);
       }
-      console.log(itemsInCart);
+      console.log("product added");
 
       // if (itemsInCart != null) {
       //   qty += this.items.quantity;
@@ -38,25 +38,18 @@ export class Cart {
 
     this._save();
   }
-  // changeQuantity(id, color, qty) {
-  //   let items = this._load;
-  //   for (let i = 0; i < items.length; i++) {
-
-  // }
 
   deleteItem(index) {
     console.log(this.items.splice(index, 1));
     // supprimer la ligne dans le html
-    console.log("deleteBtn");
+    console.log("Single item deleted");
 
     this._save(index);
-    this._load(index);
   }
 
   clearCart() {
     localStorage.removeItem("cartItems");
-    // this.items = [];
-    // this._save();
+    console.log("LS has been emptied");
   }
 
   getTotal() {
@@ -73,10 +66,8 @@ export class Cart {
   }
 
   _save() {
-    //stocker this.items dans ton localSotrage
     localStorage.setItem("cartItems", JSON.stringify(this.items));
-    console.log("SAVE");
-    //location.reload();
+    console.log("LS saved");
   }
 
   _load() {

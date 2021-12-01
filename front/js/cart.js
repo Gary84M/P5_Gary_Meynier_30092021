@@ -6,15 +6,10 @@ const cart = new Cart();
 let totalQuantity = document.getElementById("totalQuantity");
 let totalPrice = document.getElementById("totalPrice");
 
-//let currentCart = JSON.parse(localStorage.getItem("cartItems")) || [];
-//console.log(currentCart);
 let totalCart = 0;
 let totalArticles = 0;
-//TODO @params item @params specs to explain better
+//RETRIEVING VALUES FROM LS -> ITEM(QTY, ID, COLOURS) // VALUES FROM API ARE UNDER SPECS (REST(PRICE, ...))
 cart.items.forEach((item, index) => {
-  console.log(item._id);
-  console.log(item.color);
-
   //injection of <article>
   let article = document.createElement("article");
   document.querySelector("#cart__items").appendChild(article);
@@ -26,16 +21,15 @@ cart.items.forEach((item, index) => {
   article.appendChild(divImg);
   divImg.className = "cart__item__img";
 
-  //-> Inject img from API
+  //Call API
   fetch(API_PRODUCTS_LIST_LINK + "/" + item._id)
     .then((res) => res.json())
     .then((specs) => {
+      //-> Inject img from API
       let picture = document.createElement("img");
       divImg.appendChild(picture);
       picture.src = specs.imageUrl;
       picture.alt = specs.description;
-
-      console.log(specs.imageUrl);
 
       //Injection  of a div cart__item__content
       let productItemContent = document.createElement("div");
@@ -57,9 +51,6 @@ cart.items.forEach((item, index) => {
       let productPrice = document.createElement("p");
       productItemContentTitlePrice.appendChild(productPrice);
       productPrice.innerHTML = specs.price + " €";
-
-      console.log(specs.name);
-      console.log(specs.price);
 
       //Injection of a div -> cart__item__content__settings
       let cartItemContentSettings = document.createElement("div");
@@ -93,35 +84,17 @@ cart.items.forEach((item, index) => {
       qtyInput.setAttribute("max", "100");
       qtyInput.setAttribute("name", "itemQuantity");
 
-      //Changement des qty
+      //amend Qty/Price
       qtyInput.addEventListener("change", (e) => {
         e.preventDefault();
 
         let oldQty = item.qty;
         let ttPrice = totalPrice.value;
 
-        // on change la valeur de qty localstorage
         item.qty = parseInt(qtyInput.value);
         let diff = item.qty - oldQty;
-        console.log(diff);
+        console.log("Qty change detected of " + diff);
         cart._save();
-        console.log(item);
-        console.log(cart);
-        //et oldQty = cart.items[index].qty;
-        /*
-        console.log(e.target.valueAsNumber);
-        let newInput = e.target.valueAsNumber;
-        console.log(item);
-        item.qty = qtyInput.value;
-        console.log(item);
-        console.log(cart);
-        let totalChange = newInput - oldQty;
-*/
-        console.log(specs);
-        console.log(qtyInput.value);
-        console.log(item.qty);
-        console.log("Qty change detected");
-
         // f calcul des totaux
         calculateTotals(diff, specs.price);
       });
@@ -148,6 +121,7 @@ cart.items.forEach((item, index) => {
         totalPrice.innerHTML = totalCart;
         cart.totalPrice = totalCart;
         totalQuantity.innerHTML = totalArticles;
+        cart._save;
       }
       calculateTotals(item.qty, specs.price);
 
@@ -156,12 +130,9 @@ cart.items.forEach((item, index) => {
 
       deleteBtns[index].addEventListener("click", (e) => {
         //e.preventDefault();
-        console.log("je click" + index);
-        console.log(e);
         e.path[4].remove();
         cart.deleteItem(index);
         calculateTotals(item.qty * -1, specs.price);
-        cart._save;
       });
     })
     .catch((error) => {
@@ -173,7 +144,6 @@ cart.items.forEach((item, index) => {
 //*******************************************************************/
 
 //DOM SELECTION
-//let form = document.querySelector(".cart__order__form");
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
 let address = document.getElementById("address");
@@ -255,12 +225,12 @@ orderBtn.addEventListener("click", (e) => {
   e.preventDefault();
   let contact = {};
   let products = [];
-  //collect items' IDs
+  //push items' IDs
   cart.items.forEach((item) => {
     products.push(item._id);
     console.log(item);
   });
-  // call verif functions based on exports.orderProducts = (req, res, next) =>
+  // call verif functions based on exports.orderProducts = (req, res, next) ->
   if (
     !firstNameVerif() ||
     !lastNameVerif() ||
@@ -284,38 +254,7 @@ orderBtn.addEventListener("click", (e) => {
       contact,
       products,
     };
-
     sendOrder(order);
-
-    //async function postToApi() {}
-    /*
-    fetch('http://localhost:3000/api/products/order', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(order),
-    })
-      .then((response) => {
-        let data = response.json();
-        console.log(data.orderId);
-        if (data) {
-          console.log(data);
-          
-          let orderLink = document.createElement("a");
-          orderLink.href = "confirmation.html?id=" + data.orderId;
-
-          
-          
-          console.log(orderLink);
-          window.location.href = orderLink;
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-      */
   }
 });
 
@@ -333,12 +272,11 @@ const sendOrder = async (order) => {
       throw new Error(response.status);
     }
     const data = await response.json();
-    console.log(data.orderId);
+    console.log("The order number is " + data.orderId);
 
     let orderLink = document.createElement("a");
     orderLink.href = "confirmation.html?id=" + data.orderId;
 
-    console.log(orderLink);
     window.location.href = orderLink;
   } catch (error) {
     console.log(error);
