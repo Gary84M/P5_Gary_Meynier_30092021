@@ -25,7 +25,7 @@ export class Cart {
       } else {
         this.items.push(sofa);
       }
-      console.log("product added");
+      console.log(sofa.qty + " product added");
 
       // if (itemsInCart != null) {
       //   qty += this.items.quantity;
