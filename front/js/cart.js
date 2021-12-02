@@ -3,12 +3,14 @@ import { API_PRODUCTS_LIST_LINK } from "./constant.js";
 
 const cart = new Cart();
 
+//DOM SELECTION
 let totalQuantity = document.getElementById("totalQuantity");
 let totalPrice = document.getElementById("totalPrice");
 
 let totalCart = 0;
 let totalArticles = 0;
 //RETRIEVING VALUES FROM LS -> ITEM(QTY, ID, COLOURS) // VALUES FROM API ARE UNDER SPECS (REST(PRICE, ...))
+//Loop through each items' specifications and HTMLinject
 cart.items.forEach((item, index) => {
   //injection of <article>
   let article = document.createElement("article");
@@ -249,7 +251,7 @@ orderBtn.addEventListener("click", (e) => {
       city: city.value,
       email: email.value,
     };
-    // declare order containing contact and products
+    // declare order containing contact and products as expected by the backend  
     let order = {
       contact,
       products,

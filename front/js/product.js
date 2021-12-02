@@ -20,7 +20,7 @@ const queryStringURLId = window.location.search;
 const urlSearchParams = new URLSearchParams(queryStringURLId);
 //create const id
 const id = urlSearchParams.get("id");
-
+//Making sure this is an integer
 function isInteger(n) {
   return !isNaN(parseInt(n));
 }
@@ -62,13 +62,14 @@ function colorPicker(colors) {
     couchColorsSelector.appendChild(option);
   }
 }
-//Call the API + id. declare: data. call API, specsInjection & colorPicker
+//Call API + id. call API
 async function couchSpecs(id) {
   const response = await fetch(API_PRODUCTS_LIST_LINK + "/" + id);
   return await response.json();
 }
-
+//HTMLInjection of images, price & desc
 const specsInjection = (data) => {
+  console.log(data.altTxt);
   couchImgContainer.innerHTML = `
       <img src="${data.imageUrl}" alt="${data.altTxt}">
   `;

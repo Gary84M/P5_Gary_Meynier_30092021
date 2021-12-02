@@ -1,3 +1,5 @@
+//setup of the cart to be imported
+
 export class Cart {
   constructor() {
     this.items = [];
@@ -15,7 +17,7 @@ export class Cart {
         qty,
         color,
       };
-
+      //increment if item is already in the cart with .find
       let itemsInCart = this.items.find(
         (p) => p._id === sofa._id && p.color === sofa.color
       );
@@ -26,14 +28,7 @@ export class Cart {
         this.items.push(sofa);
       }
       console.log(sofa.qty + " product added");
-
-      // if (itemsInCart != null) {
-      //   qty += this.items.quantity;
-      //   console.log(item.price);
-      // } else {
-      //   return 0;
-      // }
-      // alert("Articles(s) rajouté(s) au panier");
+      alert("Articles(s) rajouté(s) au panier");
     }
 
     this._save();
@@ -41,9 +36,7 @@ export class Cart {
 
   deleteItem(index) {
     console.log(this.items.splice(index, 1));
-    // supprimer la ligne dans le html
     console.log("Single item deleted");
-
     this._save(index);
   }
 
