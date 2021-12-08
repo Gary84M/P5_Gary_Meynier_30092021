@@ -28,7 +28,7 @@ export class Cart {
         this.items.push(sofa);
       }
       console.log(sofa.qty + " product added");
-      alert("Articles(s) rajouté(s) au panier");
+      alert("Article(s) rajouté(s) au panier");
     }
 
     this._save();

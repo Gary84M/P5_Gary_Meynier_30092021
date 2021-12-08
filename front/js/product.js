@@ -2,7 +2,7 @@ import { API_PRODUCTS_LIST_LINK } from "./constant.js";
 import { Cart } from "./model/Cart.js";
 
 const cart = new Cart();
-
+//DOM selection
 const addToCartButton = document.getElementById("addToCart");
 const couchQuantityInput = document.getElementById("quantity");
 const couchColorsSelector = document.getElementById("colors");
@@ -62,7 +62,7 @@ function colorPicker(colors) {
     couchColorsSelector.appendChild(option);
   }
 }
-//Call API + id. call API
+//Call API + id
 async function couchSpecs(id) {
   const response = await fetch(API_PRODUCTS_LIST_LINK + "/" + id);
   return await response.json();
